@@ -20,3 +20,16 @@ export const createProject = (project) => {
     });
   }
 };
+
+export const deletePayment = (project) => {
+  return (dispatch, getState, {getFirestore}) => {
+
+    const firestore = getFirestore();
+
+    firestore.collection("projects").doc(project.id).delete().then(function() {
+      console.log('delete project success');
+    }).catch(() => {
+      console.log('delete project error');
+    });
+  }
+};

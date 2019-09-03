@@ -9,20 +9,34 @@ const createNotification = ((notification) => {
         .then(doc => console.log('notification added', doc));
 });
 
-exports.projectCreated = functions.firestore
+exports.projectDeleted = functions.firestore
     .document('projects/{projectId}')
-    .onCreate(doc => {
+    .onDelete(doc => {
 
         const project = doc.data();
         const notification = {
-            content: ' added a new payment',
+            content: ' deleted a payment: \'' + `${project.title}` + '\'',
             user: `${project.authorFirstName} ${project.authorLastName}`,
             time: admin.firestore.FieldValue.serverTimestamp(),
             userId: `${project.authorId}`
         };
 
         return createNotification(notification);
+    });
 
+exports.projectCreated = functions.firestore
+    .document('projects/{projectId}')
+    .onCreate(doc => {
+
+        const project = doc.data();
+        const notification = {
+            content: ' added a new payment: \'' + `${project.title}` + '\'',
+            user: `${project.authorFirstName} ${project.authorLastName}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            userId: `${project.authorId}`
+        };
+
+        return createNotification(notification);
     });
 
 exports.userJoined = functions.auth.user()
@@ -42,6 +56,5 @@ exports.userJoined = functions.auth.user()
                 };
 
                 return createNotification(notification);
-
             });
     });
