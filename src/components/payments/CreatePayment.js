@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createProject } from '../../store/actions/projectActions'
+import { createPayment } from '../../store/actions/paymentActions'
 import { Redirect } from 'react-router-dom'
 import DayPicker from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
 
-class CreateProject extends Component {
+class CreatePayment extends Component {
 
   state = {
     title: '',
@@ -35,9 +35,23 @@ class CreateProject extends Component {
   };
 
   handleSubmit = (e) => {
+
     e.preventDefault();
-    this.props.createProject(this.state);
-    this.props.history.push('/');
+
+    let fieldsAreFilled = true;
+
+    for (let i in this.state) {
+      if ((this.state[i] === null || this.state[i] === '') && i !== "comment") {
+        alert("Заполните все обязательные поля");
+        fieldsAreFilled = false;
+        break;
+      }
+    }
+
+    if (fieldsAreFilled) {
+      this.props.createPayment(this.state);
+      this.props.history.push('/');
+    }
   };
 
   render() {
@@ -58,7 +72,7 @@ class CreateProject extends Component {
           </div>
           <div className="input-field">
             <textarea id="comment" className="materialize-textarea" onChange={this.handleChange}/>
-            <label htmlFor="comment">Сomment</label>
+            <label htmlFor="comment">Сomment (optional)</label>
           </div>
           <div className="input-field">
             <textarea id="requisites" className="materialize-textarea" onChange={this.handleChange}/>
@@ -95,8 +109,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createProject: (project) => dispatch(createProject(project))
+    createPayment: (payment) => dispatch(createPayment(payment))
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateProject)
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePayment)

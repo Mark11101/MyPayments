@@ -9,31 +9,31 @@ const createNotification = ((notification) => {
         .then(doc => console.log('notification added', doc));
 });
 
-exports.projectDeleted = functions.firestore
-    .document('projects/{projectId}')
+exports.paymentDeleted = functions.firestore
+    .document('payments/{paymentId}')
     .onDelete(doc => {
 
-        const project = doc.data();
+        const payment = doc.data();
         const notification = {
-            content: ' deleted a payment: \'' + `${project.title}` + '\'',
-            user: `${project.authorFirstName} ${project.authorLastName}`,
+            content: ' deleted a payment: \'' + `${payment.title}` + '\'',
+            user: `${payment.authorFirstName} ${payment.authorLastName}`,
             time: admin.firestore.FieldValue.serverTimestamp(),
-            userId: `${project.authorId}`
+            userId: `${payment.authorId}`
         };
 
         return createNotification(notification);
     });
 
-exports.projectCreated = functions.firestore
-    .document('projects/{projectId}')
+exports.paymentCreated = functions.firestore
+    .document('payments/{paymentId}')
     .onCreate(doc => {
 
-        const project = doc.data();
+        const payment = doc.data();
         const notification = {
-            content: ' added a new payment: \'' + `${project.title}` + '\'',
-            user: `${project.authorFirstName} ${project.authorLastName}`,
+            content: ' added a new payment: \'' + `${payment.title}` + '\'',
+            user: `${payment.authorFirstName} ${payment.authorLastName}`,
             time: admin.firestore.FieldValue.serverTimestamp(),
-            userId: `${project.authorId}`
+            userId: `${payment.authorId}`
         };
 
         return createNotification(notification);

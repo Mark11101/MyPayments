@@ -5,32 +5,36 @@ import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 import moment from 'moment'
 
-const ProjectDetails = (props) => {
+const PaymentDetails = (props) => {
 
-  const { project, auth } = props;
+  const { payment, auth } = props;
 
   if (!auth.uid) {
     return <Redirect to='/signin' />
   }
 
-  if (project) {
+  if (payment) {
     return (
-      <div className="container section project-details">
+      <div className="container section payment-details">
         <div className="card z-depth-0">
           <div className="card-content">
-            <span className="card-title">{project.title}</span>
-            <br/>
-            <p>Comment:</p>
-            <p>{project.comment}</p>
+            <span className="card-title">{payment.title}</span>
+            {payment.comment ? <div>
+                                 <br/>
+                                 <p>Comment:</p>
+                                 <p>{payment.comment}</p>
+                               </div>
+                             : null
+            }
             <br/>
             <p>Requisites:</p>
-            <p>{project.requisites}</p>
+            <p>{payment.requisites}</p>
             <br/>
-            <h5 className="pink-text costNumber">{project.cost} ₽</h5>
+            <h5 className="pink-text costNumber">{payment.cost} ₽</h5>
           </div>
           <div className="card-action grey lighten-4 grey-text">
-            {project.status ? <div>Payment is paid</div> : <div>Payment is't paid</div>}
-            <div>{moment(project.date.toDate()).subtract(10, 'days').calendar()}</div>
+            {payment.status ? <div>Payment is paid</div> : <div>Payment is't paid</div>}
+            <div>{moment(payment.date.toDate()).format('DD/MM/YYYY')}</div>
           </div>
         </div>
       </div>
@@ -47,11 +51,11 @@ const ProjectDetails = (props) => {
 const mapStateToProps = (state, ownProps) => {
 
   const id = ownProps.match.params.id;
-  const projects = state.firestore.data.projects;
-  const project = projects ? projects[id] : null;
+  const payments = state.firestore.data.payments;
+  const payment = payments ? payments[id] : null;
 
   return {
-    project: project,
+    payment: payment,
     auth: state.firebase.auth
   }
 
@@ -60,6 +64,6 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([{
-    collection: 'projects'
+    collection: 'payments'
   }])
-)(ProjectDetails)
+)(PaymentDetails)

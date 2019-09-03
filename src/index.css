@@ -50,7 +50,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   display: none;
 }
 
-.project-summary:hover .delete {
+.payment-summary:hover .delete {
   display: inline-block;
 }
 

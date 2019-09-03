@@ -19,8 +19,22 @@ class SignUp extends Component {
   };
 
   handleSubmit = (e) => {
+
     e.preventDefault();
-    this.props.signUp(this.state);
+
+    let fieldsAreFilled = true;
+
+    for (let i in this.state) {
+      if (this.state[i] === '') {
+        alert("Заполните все поля");
+        fieldsAreFilled = false;
+        break;
+      }
+    }
+
+    if (fieldsAreFilled) {
+      this.props.signUp(this.state);
+    }
   };
 
   render() {
@@ -45,11 +59,11 @@ class SignUp extends Component {
           </div>
           <div className="input-field">
             <label htmlFor="firstName">First Name</label>
-            <input type="text" id='firstName' onChange={this.handleChange} />
+            <input type="text" id='firstName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Неверное имя" onChange={this.handleChange} />
           </div>
           <div className="input-field">
             <label htmlFor="lastName">Last Name</label>
-            <input type="text" id='lastName' onChange={this.handleChange} />
+            <input type="text" id='lastName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Неверная фамилия"  onChange={this.handleChange} />
           </div>
           <div className="input-field">
             <button className="btn pink lighten-1 z-depth-0">Sign Up</button>

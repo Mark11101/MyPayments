@@ -1,35 +1,35 @@
-export const createProject = (project) => {
+export const createPayment = (payment) => {
   return (dispatch, getState, {getFirestore}) => {
 
     const firestore = getFirestore();
     const profile = getState().firebase.profile;
     const authorId = getState().firebase.auth.uid;
 
-    firestore.collection('projects').add({
+    firestore.collection('payments').add({
 
-      ...project,
+      ...payment,
       authorFirstName: profile.firstName,
       authorLastName: profile.lastName,
       authorId: authorId,
       createdAt: new Date()
 
     }).then(() => {
-      dispatch({ type: 'CREATE_PROJECT_SUCCESS' });
+      dispatch({ type: 'CREATE_PAYMENT_SUCCESS' });
     }).catch(err => {
-      dispatch({ type: 'CREATE_PROJECT_ERROR' }, err);
+      dispatch({ type: 'CREATE_PAYMENT_ERROR' }, err);
     });
   }
 };
 
-export const deletePayment = (project) => {
+export const deletePayment = (payment) => {
   return (dispatch, getState, {getFirestore}) => {
 
     const firestore = getFirestore();
 
-    firestore.collection("projects").doc(project.id).delete().then(function() {
-      console.log('delete project success');
+    firestore.collection("payments").doc(payment.id).delete().then(function() {
+      console.log('delete payment success');
     }).catch(() => {
-      console.log('delete project error');
+      console.log('delete payment error');
     });
   }
 };
