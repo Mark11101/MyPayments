@@ -57,3 +57,13 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .delete:hover {
   color: #ec407a;
 }
+
+.balance {
+  margin-right: 40px;
+  margin-left: 40px;
+  font-size: 16px;
+}
+
+.balance:hover {
+  cursor: pointer;
+}

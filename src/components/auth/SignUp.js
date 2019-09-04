@@ -59,11 +59,11 @@ class SignUp extends Component {
           </div>
           <div className="input-field">
             <label htmlFor="firstName">First Name</label>
-            <input type="text" id='firstName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Неверное имя" onChange={this.handleChange} />
+            <input type="text" id='firstName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Wrong name input" onChange={this.handleChange} />
           </div>
           <div className="input-field">
             <label htmlFor="lastName">Last Name</label>
-            <input type="text" id='lastName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Неверная фамилия"  onChange={this.handleChange} />
+            <input type="text" id='lastName' pattern="^[A-Za-zА-Яа-яЁё]+$" title="Wrong surname input"  onChange={this.handleChange} />
           </div>
           <div className="input-field">
             <button className="btn pink lighten-1 z-depth-0">Sign Up</button>
