@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { addBalance } from "../../store/actions/balanceActions";
+import {addBalance, addZeroBalance} from "../../store/actions/balanceActions";
 import { deleteOldBalances } from "../../store/actions/balanceActions";
 
 class Balance extends Component {
@@ -10,6 +10,16 @@ class Balance extends Component {
         e.preventDefault();
 
         let newBalance = prompt('Input your balance:');
+
+        if (isNaN(+newBalance) || newBalance === '' || /^\s+$/.test(newBalance)) {
+            this.handleClick(e, balance);
+            return null;
+        } else if (newBalance === null) {
+            return null;
+        }
+
+        console.log(newBalance);
+
         this.props.addBalance(newBalance);
 
         if (balance !== null) {
@@ -20,7 +30,7 @@ class Balance extends Component {
     outputBalance = (balance, auth) => {
         return (
             <div>
-                {balance.length === 0 ? this.outputZeroBalance() : this.outputInputedBalance(balance, auth)}
+                {this.outputInputedBalance(balance, auth)}
             </div>
         );
     };
@@ -44,16 +54,8 @@ class Balance extends Component {
                 })
             )
         } else {
-            return this.outputZeroBalance();
+            return this.props.addZeroBalance(auth);
         }
-    };
-
-    outputZeroBalance = () => {
-        return (
-            <span className="pink-text balance" onClick={(e) => this.handleClick(e, null)}>
-                0 ₽
-            </span>
-        )
     };
 
     checkIfUserHasBalance = (balance, auth) => {
@@ -78,7 +80,7 @@ class Balance extends Component {
 
         return (
             <div>
-                {balance !== undefined ? this.outputBalance(balance, auth) : null}
+                {balance && this.outputBalance(balance, auth)}
             </div>
         )
     }
@@ -88,6 +90,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addBalance: (balance) => dispatch(addBalance(balance)),
         deleteOldBalances: (balance) => dispatch(deleteOldBalances(balance)),
+        addZeroBalance: (auth) => dispatch(addZeroBalance(auth)),
     }
 };
 

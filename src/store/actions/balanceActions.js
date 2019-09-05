@@ -33,3 +33,23 @@ export const deleteOldBalances = (balance) => {
         });
     }
 };
+
+export const addZeroBalance = (auth) => {
+    return (dispatch, getState, {getFirestore}) => {
+
+        const firestore = getFirestore();
+        const authorId = auth.uid;
+
+        firestore.collection('balance').add({
+
+            balance: 0,
+            authorId: authorId,
+            createdAt: new Date()
+
+        }).then(() => {
+            dispatch({ type: 'UPDATE_BALANCE_SUCCESS' });
+        }).catch(err => {
+            dispatch({ type: 'UPDATE_BALANCE_ERROR' }, err);
+        });
+    }
+};
