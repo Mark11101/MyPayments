@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import {addBalance, addZeroBalance} from "../../store/actions/balanceActions";
+import { addBalance, addZeroBalance } from "../../store/actions/balanceActions";
 import { deleteOldBalances } from "../../store/actions/balanceActions";
 
 class Balance extends Component {
@@ -22,6 +22,7 @@ class Balance extends Component {
 
         this.props.addBalance(newBalance);
 
+        //??? попробовать без условия
         if (balance !== null) {
             this.props.deleteOldBalances(balance);
         }
@@ -62,8 +63,8 @@ class Balance extends Component {
 
         let userHasBalance = false;
 
-        balance.forEach((elem) => {
-            const balanceAuthorID = elem.authorId;
+        balance.forEach((balance) => {
+            const balanceAuthorID = balance.authorId;
             const userID = auth.uid;
 
             if (userID === balanceAuthorID) {

@@ -4,6 +4,7 @@ import { createPayment } from '../../store/actions/paymentActions'
 import { Redirect } from 'react-router-dom'
 import DayPicker from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
+import { addBalance, deleteOldBalances } from "../../store/actions/balanceActions";
 
 class CreatePayment extends Component {
 
@@ -34,7 +35,7 @@ class CreatePayment extends Component {
     });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, auth, balance) => {
 
     e.preventDefault();
 
@@ -50,13 +51,28 @@ class CreatePayment extends Component {
 
     if (fieldsAreFilled) {
       this.props.createPayment(this.state);
+      this.changeBalance(this.state.cost, auth, balance);
       this.props.history.push('/');
     }
   };
 
+  changeBalance = (cost, auth, balance) => {
+
+    balance.forEach((balance) => {
+
+      const balanceAuthorID = balance.authorId;
+      const userID = auth.uid;
+
+      if (userID === balanceAuthorID) {
+        this.props.addBalance(+balance.balance - +cost);
+        this.props.deleteOldBalances(balance);
+      }
+    });
+  };
+
   render() {
 
-    const { auth } = this.props;
+    const { auth, balance } = this.props;
 
     if (!auth.uid) {
       return <Redirect to='/signin' />
@@ -64,7 +80,7 @@ class CreatePayment extends Component {
 
     return (
       <div className="container">
-        <form className="white" onSubmit={this.handleSubmit}>
+        <form className="white" onSubmit={(e) => this.handleSubmit(e, auth, balance)}>
           <h5 className="grey-text text-darken-3">Add a new payment</h5>
           <div className="input-field">
             <input type="text" id='title' onChange={this.handleChange} />
@@ -103,13 +119,16 @@ class CreatePayment extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    balance: state.firestore.ordered.balance,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    createPayment: (payment) => dispatch(createPayment(payment))
+    createPayment: (payment) => dispatch(createPayment(payment)),
+    addBalance: (balance) => dispatch(addBalance(balance)),
+    deleteOldBalances: (balance) => dispatch(deleteOldBalances(balance)),
   }
 };
 
