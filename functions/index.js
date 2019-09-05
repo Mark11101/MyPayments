@@ -12,7 +12,6 @@ const createNotification = ((notification) => {
 exports.paymentDeleted = functions.firestore
     .document('payments/{paymentId}')
     .onDelete(doc => {
-
         const payment = doc.data();
         const notification = {
             content: ' deleted a payment: \'' + `${payment.title}` + '\'',
@@ -27,7 +26,6 @@ exports.paymentDeleted = functions.firestore
 exports.paymentCreated = functions.firestore
     .document('payments/{paymentId}')
     .onCreate(doc => {
-
         const payment = doc.data();
         const notification = {
             content: ' added a new payment: \'' + `${payment.title}` + '\'',
@@ -46,7 +44,6 @@ exports.userJoined = functions.auth.user()
 
         return admin.firestore().collection('users')
             .doc(userId).get().then(doc => {
-
                 const newUser = doc.data();
                 const notification = {
                     content: ' signed up',
@@ -57,4 +54,18 @@ exports.userJoined = functions.auth.user()
 
                 return createNotification(notification);
             });
+    });
+
+exports.balanceCreated = functions.firestore
+    .document('balance/{balance}')
+    .onCreate(doc => {
+        const balance = doc.data();
+        const notification = {
+            content: ' have: ' + `${balance.balance}` + ' ₽',
+            user: `${balance.authorFirstName} ${balance.authorLastName}`,
+            time: admin.firestore.FieldValue.serverTimestamp(),
+            userId: `${balance.authorId}`
+        };
+
+        return createNotification(notification);
     });
