@@ -67,3 +67,20 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .balance:hover {
   cursor: pointer;
 }
+
+.search {
+  background-color: #424242;
+  border-radius: 30px;
+}
+
+.search__icon {
+  margin-left: 10px;
+  margin-top: 5px;
+  color: #ffffff;
+}
+
+.search__input {
+  width: 80% !important;
+  margin-left: 55px !important;
+  color: #ffffff;
+}
