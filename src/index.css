@@ -84,3 +84,61 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   margin-left: 55px !important;
   color: #ffffff;
 }
+
+.sort {
+  margin-top: 30px !important;
+  background-color: #f7f7f7;
+  border-radius: 50px;
+  height: 90px;
+}
+
+.sort-radioButtons {
+  margin-top: -5px;
+}
+
+.sort-radioButtons label {
+  margin-left: 41px;
+}
+
+.select-dropdown {
+  border-bottom: none !important;
+  margin-left: 45px !important;
+  width: 328px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.select-dropdown li {
+  min-height: 45px !important;
+  height: 0 !important;
+}
+
+.select-wrapper svg {
+  margin-right: 45px !important;
+}
+
+.filter {
+  margin-top: 30px;
+  background-color: #424242;
+  border-radius: 50px;
+  height: 100px;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+.filter__input {
+  width: 85% !important;
+  margin-left: 35px !important;
+  color: #ffffff;
+}
+
+.filter-radioButtons label {
+  margin-left: 35px;
+}
+
+.filter__inputDiv {
+  margin-bottom: 10px !important;
+}

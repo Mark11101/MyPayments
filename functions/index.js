@@ -37,25 +37,6 @@ exports.paymentCreated = functions.firestore
         return createNotification(notification);
     });
 
-exports.userJoined = functions.auth.user()
-    .onCreate(user => {
-
-        const userId = user.uid;
-
-        return admin.firestore().collection('users')
-            .doc(userId).get().then(doc => {
-                const newUser = doc.data();
-                const notification = {
-                    content: ' signed up',
-                    user: `${newUser.firstName} ${newUser.lastName}`,
-                    time: admin.firestore.FieldValue.serverTimestamp(),
-                    userId: `${userId}`
-                };
-
-                return createNotification(notification);
-            });
-    });
-
 exports.balanceCreated = functions.firestore
     .document('balance/{balance}')
     .onCreate(doc => {
