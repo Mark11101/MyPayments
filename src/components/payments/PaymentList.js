@@ -10,10 +10,11 @@ class PaymentList extends React.Component {
   state = {
     searchingFilter: '',
     filteringFilter: '',
+    sortingFilter: 'null',
     typeOfFiltering: 'MoreThan',
     typeOfSorting: 'Asc',
+    filterByPaid: 'all',
     data: [],
-    sortingFilter: 'null'
   };
 
   handleChange = (e) => {
@@ -36,10 +37,11 @@ class PaymentList extends React.Component {
       date.setSeconds(payment.date.seconds);
 
       this.state.data.push({
-        id:    payment.id,
-        title: payment.title,
-        cost:  payment.cost,
-        date:  moment(date).format('DD/MM/YYYY')
+        id:     payment.id,
+        title:  payment.title,
+        cost:   payment.cost,
+        date:   moment(date).format('DD/MM/YYYY'),
+        status: payment.status
       });
 
       return null;
@@ -52,9 +54,13 @@ class PaymentList extends React.Component {
     const lowercaseFilter = searchingFilter.toLowerCase();
 
     return data.filter(item => {
-      return Object.keys(item).some(key =>
-          item[key].toLowerCase().includes(lowercaseFilter)
-      );
+      return Object.keys(item).some(key => {
+        if (key !== "status") {
+          return item[key].toLowerCase().includes(lowercaseFilter)
+        } else {
+          return null;
+        }
+      });
     });
   };
 
@@ -62,7 +68,7 @@ class PaymentList extends React.Component {
 
     const lowercaseFilter = filteringFilter.toLowerCase();
 
-    return data.filter(item => {
+    const filteredDataByInput = data.filter(item => {
       return Object.keys(item).some((key) => {
 
         if (this.state.typeOfFiltering === "MoreThan") {
@@ -95,6 +101,17 @@ class PaymentList extends React.Component {
         }
       });
     });
+
+    return filteredDataByInput.filter(item => {
+      return Object.keys(item).some(() => {
+        if (this.state.filterByPaid === 'all') {
+          return filteredDataByInput;
+        }
+        else {
+          return String(item.status) === this.state.filterByPaid
+        }
+      })
+    });
   };
 
   findUserPayments = (payments, auth, searchedData, filteredData) => {
@@ -107,7 +124,7 @@ class PaymentList extends React.Component {
         const userID = auth.uid;
 
         if (authorOfPaymentID === userID) {
-          userPayments.push(payment);
+          return userPayments.push(payment);
         }
 
         else {
@@ -157,6 +174,8 @@ class PaymentList extends React.Component {
                 return secondSortingValue - firstSortingValue;
               }
             }
+          } else {
+            return null;
           }
         })
         .map((payment) =>
@@ -170,7 +189,7 @@ class PaymentList extends React.Component {
       if (searchedData[i].id === payment.id || this.state.searchingFilter === '') {
 
         for (let j in filteredData) {
-          if (filteredData[j].id === payment.id || this.state.filteringFilter === '') {
+          if (filteredData[j].id === payment.id) {
 
             return (
                 <Link to={'/payment/' + payment.id} key={payment.id}>
@@ -208,7 +227,7 @@ class PaymentList extends React.Component {
           <div className="sort">
             <div className="input-field">
               <select id="sortingFilter" onChange={this.handleChange}>
-                <option value="null" selected>Sort by</option>
+                <option value="null">Sort by</option>
                 <option value="Title">Title</option>
                 <option value="Cost">Cost</option>
                 <option value="Date">Date</option>
@@ -238,6 +257,20 @@ class PaymentList extends React.Component {
               <label>
                 <input name="radioFilter" type="radio" id="LessThan" className="typeOfFiltering" onChange={this.handleChangeRadioBtn} />
                 <span>Less than</span>
+              </label>
+            </div>
+            <div className="filter__filterByStatus">
+              <label className="filterPaid">
+                <input name="radioStatus" type="radio" id="all" className="filterByPaid" onChange={this.handleChangeRadioBtn}/>
+                <span>All</span>
+              </label>
+              <label className="filterPaid">
+                <input name="radioStatus" type="radio" id="true" className="filterByPaid" onChange={this.handleChangeRadioBtn}/>
+                <span>Paid</span>
+              </label>
+              <label>
+                <input name="radioStatus" type="radio" id="false" className="filterByPaid" onChange={this.handleChangeRadioBtn}/>
+                <span>Not paid</span>
               </label>
             </div>
           </div>

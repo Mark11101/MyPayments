@@ -120,25 +120,29 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .filter {
   margin-top: 30px;
   background-color: #424242;
-  border-radius: 50px;
-  height: 100px;
-}
-
-form {
-  margin: 0;
-  padding: 0;
+  border-radius: 100px;
+  height: 150px;
 }
 
 .filter__input {
-  width: 85% !important;
-  margin-left: 35px !important;
+  width: 80% !important;
+  margin-left: 50px !important;
   color: #ffffff;
 }
 
 .filter-radioButtons label {
-  margin-left: 35px;
+  margin-left: 45px;
 }
 
 .filter__inputDiv {
   margin-bottom: 10px !important;
+}
+
+.filter__filterByStatus {
+  margin-left: 45px;
+  margin-top: 15px;
+}
+
+.filterPaid {
+  margin-right: 55px !important;
 }
