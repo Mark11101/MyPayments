@@ -69,7 +69,7 @@ class PaymentList extends React.Component {
     const lowercaseFilter = filteringFilter.toLowerCase();
 
     const filteredDataByInput = data.filter(item => {
-      return Object.keys(item).some((key) => {
+      return Object.keys(item).some(() => {
 
         if (this.state.typeOfFiltering === "MoreThan") {
 
@@ -82,21 +82,21 @@ class PaymentList extends React.Component {
           }
 
           else {
-            return item[key].toLowerCase() >= lowercaseFilter
+            return item.title.toLowerCase() > lowercaseFilter
           }
         }
 
         else {
           if (!isNaN(filteringFilter)) {
-            return +item.cost.toLowerCase() <= lowercaseFilter
+            return +item.cost.toLowerCase() < lowercaseFilter
           }
 
           else if (filteringFilter.indexOf('/') > -1) {
-            return item.date.toLowerCase() <= lowercaseFilter
+            return item.date.toLowerCase() < lowercaseFilter
           }
 
           else {
-            return item[key].toLowerCase() <= lowercaseFilter
+            return item.title.toLowerCase() < lowercaseFilter
           }
         }
       });

@@ -63,7 +63,7 @@ class CreatePayment extends Component {
       const balanceAuthorID = balance.authorId;
       const userID = auth.uid;
 
-      if (userID === balanceAuthorID) {
+      if (userID === balanceAuthorID && this.state.status !== false) {
         this.props.addBalance(+balance.balance - +cost);
         this.props.deleteOldBalances(balance);
       }

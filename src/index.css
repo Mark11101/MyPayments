@@ -37,7 +37,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 }
 
 .card {
-  border-radius: 7px;
+  border-radius: 7px !important;
 }
 
 .costNumber {
